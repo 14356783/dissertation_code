@@ -1,6 +1,6 @@
 $OMP=8
 [ Title ]
-SEE Simulation in Silicon Sensitive Volume - 10 - 200 MeV Protons
+SEE Simulation in Silicon Sensitive Volume
 
 [ Parameters ]
  istdev   =         1        $ Batch variance mode (required for OpenMP, PHITS FAQ Q1.5)
