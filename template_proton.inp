@@ -1,0 +1,73 @@
+$OMP=8
+[ Title ]
+SEE Simulation in Silicon Sensitive Volume - 10 - 200 MeV Protons
+
+[ Parameters ]
+ istdev   =         1        $ Batch variance mode (required for OpenMP, PHITS FAQ Q1.5)
+ icntl	  =         0	     $ Standard transport mode
+ maxcas   =    __MAXCAS__    $ Number of histories per batch
+ maxbch	  =    __MAXBCH__    $ Number of batches
+ rseed    =    __RSEED__     $ random number seed
+ e-mode   =         2        $ (D=0) 0: Normal, 1: Event generator mode Ver.1, 2: Ver.2
+ irqmd    =         1        $ JQMD-2.0 for nuclear fragmentation
+ negs     =         2        $ EGS5 electron/photon transport
+ mdbatima =      3000        $ Expanded ATIMA stopping power memory
+ maxbnk   =   2000000        $ Memory bank size for secondary particles
+ iMeVperU =         0        $ Energy tally unit in MeV (0 = MeV, 1 = MeV/nucleon)
+ emin(12) =         0.01     $ Low electron cutoff (10 keV) for microscopic accuracy
+ emin(13) =         0.01     $ Low positron cutoff (10 keV)
+ esmax    = 100000000.       $ Range table upper limit (10^8 MeV/u)
+ wc1(1)   =         1.0d-15  $ proton
+ wc1(2)   =         1.0d-15  $ neutron
+ wc1(15)  =         1.0d-15  $ deuteron
+ wc1(16)  =         1.0d-15  $ triton
+ wc1(17)  =         1.0d-15  $ helium-3
+ wc1(18)  =         1.0d-15  $ alpha / helium-4
+ wc1(19)  =         1.0d-15  $ heavy ions (C, O, Fe — all ityp=19)
+ wc2(1)   =         1.0d-15
+ wc2(2)	  =         1.0d-15
+ wc2(15)  =         1.0d-15
+ wc2(16)  =         1.0d-15
+ wc2(17)  =         1.0d-15
+ wc2(18)  =         1.0d-15
+ wc2(19)  =         1.0d-15
+ 
+[ Forced Collisions ]
+ part = proton
+ reg  fcl
+   1  -1.0                 $ Force nuclear collisions for protons in Cell 1 (SV)
+	
+[ Source ]
+set: c1[0.00017321]        $ Radius of source sphere in cm 
+totfact = pi*c1**2         $ Normalizes statistical weights to source cross-section
+
+$ Primary Protons
+infl:{source_proton___ENERGY__mev.inp} $Uses template_proton_source parameters
+
+[ Material ]
+mat[1]    Si 1             $ Silicon target (Density: 2.33 g/cm3)
+
+[ Surface ]
+10 rpp -0.0001 0.0001 -0.0001 0.0001 -0.0001 0.0001	 $ 2x2x2 um silicon cuboid (RPP)
+99 so   0.00017321			                         $ Outer bounding sphere 
+
+[ Cell ] 
+1	1 -2.33 -10            $ Sensitive volume (silicon)
+2	0		 10 -99        $ Void space inside source sphere
+999 -1       99            $ Outer void
+
+[ T-SED ]
+     unit = 2
+     mesh = reg
+      reg = 1
+  se-type = 3
+     emin = 0.000001         $ Min energy deposit (1 eV)
+     emax = 100.0            $ Max energy deposit (100 MeV)
+       ne = 100              $ Bin resolution
+  se-unit = 1                $ Outputs deposit energy in MeV directly
+    cdiam = 2.0              $ Equivalent site diameter in um
+     axis = sed
+     file = outputs/edep_proton___ENERGY__mev.out
+     part = all              $ Tally all particles produced in SV
+	 
+[ End ]

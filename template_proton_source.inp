@@ -1,0 +1,9 @@
+  $Monogenic Isotropic Proton Source
+  <source> =  1.0          
+   s-type =   9            $ Spherical (shell) source
+       r1 =   c1           $ Radius of source sphere [cm]
+       r2 =   c1           $ Radius of source circle [cm]
+      dir =  iso      	   $ Isotropic source
+       e0 =  __ENERGY__    $ Particle energy in MeV
+ 	 proj =  proton        $ Incident particle
+
